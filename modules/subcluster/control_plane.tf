@@ -1,7 +1,7 @@
 resource "juju_application" "ams" {
   name = "ams"
 
-  model = juju_model.anbox_cloud.name
+  model       = var.model_name
   constraints = join(" ", var.constraints)
 
   charm {
@@ -21,19 +21,19 @@ resource "juju_application" "ams" {
   // the response from the JUJU APIs. This is done just to ignore the changes in
   // string values returned.
   lifecycle {
-    ignore_changes = [ constraints ]
+    ignore_changes = [constraints]
   }
 
-  depends_on = [ juju_machine.control_plane ]
+  depends_on = [juju_machine.control_plane]
 }
 
 resource "juju_application" "etcd" {
   count = var.external_etcd ? 1 : 0
   name  = "etcd"
 
-  model     = juju_model.anbox_cloud.name
+  model       = var.model_name
   constraints = join(" ", var.constraints)
-  placement = juju_machine.control_plane.machine_id
+  placement   = juju_machine.control_plane.machine_id
 
   charm {
     name    = "etcd"
@@ -49,16 +49,16 @@ resource "juju_application" "etcd" {
   // the response from the JUJU APIs. This is done just to ignore the changes in
   // string values returned.
   lifecycle {
-    ignore_changes = [ constraints ]
+    ignore_changes = [constraints]
   }
-  depends_on = [ juju_machine.control_plane ]
+  depends_on = [juju_machine.control_plane]
 }
 
 resource "juju_application" "ca" {
   count = var.external_etcd ? 1 : 0
   name  = "etcd-ca"
 
-  model       = juju_model.anbox_cloud.name
+  model       = var.model_name
   constraints = join(" ", var.constraints)
   placement   = juju_machine.control_plane.machine_id
 
@@ -67,13 +67,13 @@ resource "juju_application" "ca" {
     channel = "latest/stable"
   }
 
-  units = 1
-  depends_on = [ juju_machine.control_plane ]
+  units      = 1
+  depends_on = [juju_machine.control_plane]
 }
 
 resource "juju_integration" "ams_db" {
   count = var.external_etcd ? 1 : 0
-  model = juju_model.anbox_cloud.name
+  model = var.model_name
 
   application {
     name     = juju_application.ams.name
@@ -88,7 +88,7 @@ resource "juju_integration" "ams_db" {
 
 resource "juju_integration" "etcd_ca" {
   count = var.external_etcd ? 1 : 0
-  model = juju_model.anbox_cloud.name
+  model = var.model_name
 
   application {
     name     = one(juju_application.ca[*].name)
@@ -102,13 +102,13 @@ resource "juju_integration" "etcd_ca" {
 }
 
 resource "juju_machine" "control_plane" {
-  model = juju_model.anbox_cloud.name
-  base  = local.base
+  model       = var.model_name
+  base        = local.base
   constraints = join(" ", var.constraints)
   // FIXME: Currently the provider has some issues with reconciling state using
   // the response from the JUJU APIs. This is done just to ignore the changes in
   // string values returned.
   lifecycle {
-    ignore_changes = [ constraints ]
+    ignore_changes = [constraints]
   }
 }

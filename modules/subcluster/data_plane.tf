@@ -1,8 +1,8 @@
 resource "juju_application" "lxd" {
   name = "lxd"
 
-  model     = juju_model.anbox_cloud.name
-  constraints = join(" ", var.constraints, ["mem=1024M", "root-disk=10240M", "root-disk-source=local"])
+  model       = var.model_name
+  constraints = join(" ", var.constraints)
 
   charm {
     name    = "ams-lxd"
@@ -18,14 +18,14 @@ resource "juju_application" "lxd" {
   // the response from the JUJU APIs. This is done just to ignore the changes in
   // string values returned.
   lifecycle {
-    ignore_changes = [ constraints ]
+    ignore_changes = [constraints]
   }
 }
 
 resource "juju_application" "ams_node_controller" {
   name = "ams-node-controller"
 
-  model = juju_model.anbox_cloud.name
+  model = var.model_name
 
   charm {
     name    = "ams-node-controller"
@@ -43,7 +43,7 @@ resource "juju_application" "ams_node_controller" {
 }
 
 resource "juju_integration" "ip_table_rules" {
-  model = juju_model.anbox_cloud.name
+  model = var.model_name
 
   application {
     name     = juju_application.ams_node_controller.name
@@ -57,7 +57,7 @@ resource "juju_integration" "ip_table_rules" {
 }
 
 resource "juju_integration" "ams_node" {
-  model = juju_model.anbox_cloud.name
+  model = var.model_name
 
   application {
     name     = juju_application.ams.name

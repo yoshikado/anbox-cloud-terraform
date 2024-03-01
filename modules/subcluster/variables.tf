@@ -1,6 +1,12 @@
 variable "ua_token" {
   description = "Pro token used to deploy AMS charm"
   type        = string
+  sensitive   = true
+}
+
+variable "model_name" {
+  description = "Model name used to deploy the applications"
+  type        = string
 }
 
 variable "channel" {
