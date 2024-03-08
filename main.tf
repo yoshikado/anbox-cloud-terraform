@@ -1,6 +1,6 @@
 locals {
   model_names = flatten(
-    [for region, count in var.subclusters_per_region : [for index in range(count) : "${region}.${index}"]]
+    [for region, clusters in var.subclusters_per_region : [for cluster_name in clusters : "${region}.${cluster_name}"]]
   )
 }
 module "subcluster" {
@@ -11,7 +11,7 @@ module "subcluster" {
   channel                = "1.21/stable"
   external_etcd          = true
   constraints            = var.constraints
-  lxd_nodes              = 4
+  lxd_nodes              = var.lxd_nodes_per_subcluster
   deploy_streaming_stack = true
   deploy_dashboard       = true
 }
