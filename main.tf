@@ -4,14 +4,16 @@ locals {
   )
 }
 module "subcluster" {
-  for_each      = juju_model.anbox_cloud
-  source        = "./modules/subcluster"
-  model_name    = juju_model.anbox_cloud[each.key].name
-  ua_token      = var.ua_token
-  channel       = "1.21/stable"
-  external_etcd = true
-  constraints   = var.constraints
-  lxd_nodes     = 2
+  for_each               = juju_model.anbox_cloud
+  source                 = "./modules/subcluster"
+  model_name             = juju_model.anbox_cloud[each.key].name
+  ua_token               = var.ua_token
+  channel                = "1.21/stable"
+  external_etcd          = true
+  constraints            = var.constraints
+  lxd_nodes              = 4
+  deploy_streaming_stack = true
+  deploy_dashboard       = true
 }
 
 resource "juju_model" "anbox_cloud" {
