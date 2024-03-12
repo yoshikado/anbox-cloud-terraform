@@ -49,6 +49,7 @@ No modules.
 | [juju_application.etcd](https://registry.terraform.io/providers/juju/juju/latest/docs/resources/application) | resource |
 | [juju_application.etcd_ca](https://registry.terraform.io/providers/juju/juju/latest/docs/resources/application) | resource |
 | [juju_application.gateway](https://registry.terraform.io/providers/juju/juju/latest/docs/resources/application) | resource |
+| [juju_application.lb](https://registry.terraform.io/providers/juju/juju/latest/docs/resources/application) | resource |
 | [juju_application.lxd](https://registry.terraform.io/providers/juju/juju/latest/docs/resources/application) | resource |
 | [juju_application.nats](https://registry.terraform.io/providers/juju/juju/latest/docs/resources/application) | resource |
 | [juju_integration.agent_ca](https://registry.terraform.io/providers/juju/juju/latest/docs/resources/integration) | resource |
@@ -63,6 +64,8 @@ No modules.
 | [juju_integration.gateway_ca](https://registry.terraform.io/providers/juju/juju/latest/docs/resources/integration) | resource |
 | [juju_integration.gateway_nats](https://registry.terraform.io/providers/juju/juju/latest/docs/resources/integration) | resource |
 | [juju_integration.ip_table_rules](https://registry.terraform.io/providers/juju/juju/latest/docs/resources/integration) | resource |
+| [juju_integration.lb_dashboard](https://registry.terraform.io/providers/juju/juju/latest/docs/resources/integration) | resource |
+| [juju_integration.lb_gateway](https://registry.terraform.io/providers/juju/juju/latest/docs/resources/integration) | resource |
 | [juju_integration.nats_ca](https://registry.terraform.io/providers/juju/juju/latest/docs/resources/integration) | resource |
 | [juju_machine.control_plane](https://registry.terraform.io/providers/juju/juju/latest/docs/resources/machine) | resource |
 | [juju_machine.streaming_stack](https://registry.terraform.io/providers/juju/juju/latest/docs/resources/machine) | resource |
@@ -74,6 +77,7 @@ No modules.
 | <a name="input_channel"></a> [channel](#input\_channel) | Channel for the deployed charm | `string` | `"latest/stable"` | no |
 | <a name="input_constraints"></a> [constraints](#input\_constraints) | List of constraints that need to be applied to applications. Each constraint must be of format `<constraint_name>=<constraint_value>` | `list(string)` | `[]` | no |
 | <a name="input_deploy_dashboard"></a> [deploy\_dashboard](#input\_deploy\_dashboard) | Deploy anbox cloud dashboard with the streaming stack | `bool` | `true` | no |
+| <a name="input_deploy_lb"></a> [deploy\_lb](#input\_deploy\_lb) | Deploy a load balancer with anbox cloud streaming stack | `bool` | `false` | no |
 | <a name="input_deploy_streaming_stack"></a> [deploy\_streaming\_stack](#input\_deploy\_streaming\_stack) | Deploy anbox cloud streaming stack | `bool` | `false` | no |
 | <a name="input_external_etcd"></a> [external\_etcd](#input\_external\_etcd) | Channel for the deployed charm | `bool` | `false` | no |
 | <a name="input_lxd_nodes"></a> [lxd\_nodes](#input\_lxd\_nodes) | Channel for the deployed charm | `number` | `1` | no |

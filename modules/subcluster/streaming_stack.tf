@@ -40,7 +40,7 @@ resource "juju_application" "gateway" {
 
   config = {
     ua_token         = var.ua_token
-    use_insecure_tls = false
+    use_insecure_tls = !var.deploy_lb
   }
 
   // FIXME: Currently the provider has some issues with reconciling state using
@@ -159,6 +159,37 @@ resource "juju_application" "ca" {
   depends_on = [juju_machine.control_plane]
 }
 
+resource "juju_application" "lb" {
+  count = var.deploy_streaming_stack && var.deploy_lb ? 1 : 0
+  name  = "anbox-stream-gateway-lb"
+
+  model       = var.model_name
+  constraints = join(" ", var.constraints)
+
+  charm {
+    name     = "haproxy"
+    channel  = "stable"
+    revision = 66
+    // TODO: the HA proxy charm does not work well on 22.04 on ARM, so we pin
+    // the revision of the charm as we currently do for our full bundle.
+    // base = local.base
+  }
+  config = {
+    default_mode = "tcp"
+    peering_mode = "active-active"
+    ssl_cert     = "SELFSIGNED"
+    ssl_key      = "SELFSIGNED"
+    services     = file("${path.module}/configs/haproxy.yaml")
+  }
+
+  units = 1
+  // FIXME: Currently the provider has some issues with reconciling state using
+  // the response from the JUJU APIs. This is done just to ignore the changes in
+  // string values returned.
+  lifecycle {
+    ignore_changes = [constraints]
+  }
+}
 resource "juju_integration" "ams_agent" {
   count = var.deploy_streaming_stack ? 1 : 0
   model = var.model_name
@@ -291,6 +322,36 @@ resource "juju_integration" "dashboard_gateway" {
   application {
     name     = one(juju_application.dashboard[*].name)
     endpoint = "ams"
+  }
+}
+
+resource "juju_integration" "lb_gateway" {
+  count = var.deploy_streaming_stack && var.deploy_lb ? 1 : 0
+  model = var.model_name
+
+  application {
+    name     = one(juju_application.gateway[*].name)
+    endpoint = "api"
+  }
+
+  application {
+    name     = one(juju_application.lb[*].name)
+    endpoint = "reverseproxy"
+  }
+}
+
+resource "juju_integration" "lb_dashboard" {
+  count = var.deploy_streaming_stack && var.deploy_dashboard && var.deploy_lb ? 1 : 0
+  model = var.model_name
+
+  application {
+    name     = one(juju_application.dashboard[*].name)
+    endpoint = "reverseproxy"
+  }
+
+  application {
+    name     = one(juju_application.lb[*].name)
+    endpoint = "reverseproxy"
   }
 }
 

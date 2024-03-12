@@ -14,6 +14,7 @@ module "subcluster" {
   lxd_nodes              = var.lxd_nodes_per_subcluster
   deploy_streaming_stack = true
   deploy_dashboard       = true
+  deploy_lb              = true
 }
 
 resource "juju_model" "anbox_cloud" {

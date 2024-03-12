@@ -36,7 +36,7 @@ variable "constraints" {
 variable "deploy_dashboard" {
   description = "Deploy anbox cloud dashboard with the streaming stack"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "deploy_streaming_stack" {
@@ -44,3 +44,10 @@ variable "deploy_streaming_stack" {
   type        = bool
   default     = false
 }
+
+variable "deploy_lb" {
+  description = "Deploy a load balancer with anbox cloud streaming stack"
+  type        = bool
+  default     = false
+}
+
