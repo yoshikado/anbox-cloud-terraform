@@ -24,6 +24,7 @@ setup network rules properly on the lxd node.
 
 | Name | Version |
 |------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.0 |
 | <a name="requirement_juju"></a> [juju](#requirement\_juju) | ~> 0.10.0 |
 
 ## Providers
@@ -76,7 +77,7 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_channel"></a> [channel](#input\_channel) | Channel for the deployed charm | `string` | `"latest/stable"` | no |
 | <a name="input_constraints"></a> [constraints](#input\_constraints) | List of constraints that need to be applied to applications. Each constraint must be of format `<constraint_name>=<constraint_value>` | `list(string)` | `[]` | no |
-| <a name="input_deploy_dashboard"></a> [deploy\_dashboard](#input\_deploy\_dashboard) | Deploy anbox cloud dashboard with the streaming stack | `bool` | `true` | no |
+| <a name="input_deploy_dashboard"></a> [deploy\_dashboard](#input\_deploy\_dashboard) | Deploy anbox cloud dashboard with the streaming stack | `bool` | `false` | no |
 | <a name="input_deploy_lb"></a> [deploy\_lb](#input\_deploy\_lb) | Deploy a load balancer with anbox cloud streaming stack | `bool` | `false` | no |
 | <a name="input_deploy_streaming_stack"></a> [deploy\_streaming\_stack](#input\_deploy\_streaming\_stack) | Deploy anbox cloud streaming stack | `bool` | `false` | no |
 | <a name="input_external_etcd"></a> [external\_etcd](#input\_external\_etcd) | Channel for the deployed charm | `bool` | `false` | no |
