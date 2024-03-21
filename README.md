@@ -12,6 +12,7 @@ it can be found [here](./modules/subcluster/README.md)
 
 | Name | Version |
 |------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.0 |
 | <a name="requirement_juju"></a> [juju](#requirement\_juju) | ~> 0.10.0 |
 
 ## Providers
@@ -38,7 +39,8 @@ it can be found [here](./modules/subcluster/README.md)
 |------|-------------|------|---------|:--------:|
 | <a name="input_cloud_name"></a> [cloud\_name](#input\_cloud\_name) | Name of the cloud to deploy the subcluster to | `string` | n/a | yes |
 | <a name="input_constraints"></a> [constraints](#input\_constraints) | List of constraints that need to be applied to applications. Each constraint must be of format `<constraint_name>=<constraint_value>` | `list(string)` | `[]` | no |
-| <a name="input_subclusters_per_region"></a> [subclusters\_per\_region](#input\_subclusters\_per\_region) | Number of subclusters per region in the given cloud e.g `{ ap-south-east-1 = 1 }` | `map(number)` | n/a | yes |
+| <a name="input_lxd_nodes_per_subcluster"></a> [lxd\_nodes\_per\_subcluster](#input\_lxd\_nodes\_per\_subcluster) | Number of lxd nodes to deploy per subcluster | `number` | `1` | no |
+| <a name="input_subclusters_per_region"></a> [subclusters\_per\_region](#input\_subclusters\_per\_region) | Number of subclusters per region in the given cloud e.g `{ ap-south-east-1 = 1 }` | `map(list(string))` | n/a | yes |
 | <a name="input_ua_token"></a> [ua\_token](#input\_ua\_token) | Pro token used for anbox services | `string` | n/a | yes |
 
 ## Outputs

@@ -54,7 +54,7 @@ resource "juju_application" "etcd" {
   depends_on = [juju_machine.control_plane]
 }
 
-resource "juju_application" "ca" {
+resource "juju_application" "etcd_ca" {
   count = var.external_etcd ? 1 : 0
   name  = "etcd-ca"
 
@@ -91,7 +91,7 @@ resource "juju_integration" "etcd_ca" {
   model = var.model_name
 
   application {
-    name     = one(juju_application.ca[*].name)
+    name     = one(juju_application.etcd_ca[*].name)
     endpoint = "client"
   }
 

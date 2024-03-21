@@ -17,6 +17,13 @@ variable "cloud_name" {
 
 variable "subclusters_per_region" {
   description = "Number of subclusters per region in the given cloud e.g `{ ap-south-east-1 = 1 }`"
-  type        = map(number)
+  type        = map(list(string))
   nullable    = false
 }
+
+variable "lxd_nodes_per_subcluster" {
+  description = "Number of lxd nodes to deploy per subcluster"
+  type        = number
+  default     = 1
+}
+

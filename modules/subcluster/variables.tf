@@ -32,3 +32,22 @@ variable "constraints" {
   type        = list(string)
   default     = []
 }
+
+variable "deploy_dashboard" {
+  description = "Deploy anbox cloud dashboard with the streaming stack"
+  type        = bool
+  default     = false
+}
+
+variable "deploy_streaming_stack" {
+  description = "Deploy anbox cloud streaming stack"
+  type        = bool
+  default     = false
+}
+
+variable "deploy_lb" {
+  description = "Deploy a load balancer with anbox cloud streaming stack"
+  type        = bool
+  default     = false
+}
+
