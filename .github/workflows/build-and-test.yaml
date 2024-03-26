@@ -13,13 +13,15 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: 1.0.9
+          terraform_version: 1.6.4
       - uses: terraform-linters/setup-tflint@v2
         name: Setup TFLint
         with:
           github_token: ${{ github.TOKEN }}
       - name: Run terraform fmt check
         run: terraform fmt -check -diff -recursive .
+      - name: Run terraform init
+        run: terraform init
       - name: Run terraform validate
         run: terraform validate
       # Print TFLint version
