@@ -11,10 +11,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
+        uses: hashicorp/setup-terraform@ed3a0531877aca392eb870f440d9ae7aba83a6bd # v1
         with:
           terraform_version: 1.6.4
-      - uses: terraform-linters/setup-tflint@v2
+      - uses: terraform-linters/setup-tflint@444635365d380c7363d1eaee4267317c2445717d # v2
         name: Setup TFLint
         with:
           github_token: ${{ github.TOKEN }}
@@ -38,7 +38,7 @@ jobs:
     steps:
     # Checkout Repository
     - name : Check out Git Repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
     # Tfsec - Security scanner for your Terraform code
     - name: Run Tfsec
-      uses: aquasecurity/tfsec-action@v1.0.0
+      uses: aquasecurity/tfsec-action@a73ebc46fba54691e25cbe901656e7b205fb9bf2 # v1.0.0
