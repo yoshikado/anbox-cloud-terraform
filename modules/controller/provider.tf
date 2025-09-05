@@ -12,7 +12,7 @@ terraform {
 }
 
 locals {
-  base           = "ubuntu@22.04"
+  base           = var.ubuntu_base
   _channel_split = split("/", var.channel)
   risk           = element(local._channel_split, length(local._channel_split) - 1)
 }

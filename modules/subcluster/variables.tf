@@ -63,3 +63,9 @@ variable "image_stream" {
   type        = string
   default     = "released"
 }
+
+variable "ubuntu_base" {
+  description = "Set the default ubuntu base. Default is set to 24.04"
+  type        = string
+  default     = "ubuntu@24.04"
+}

@@ -21,6 +21,7 @@ module "subcluster" {
   enable_cos      = var.enable_cos
   ssh_public_key  = length(var.ssh_key_path) > 0 ? file(var.ssh_key_path) : ""
   image_stream    = var.image_stream
+  ubuntu_base     = var.ubuntu_base
 
   // We let the `lxd_node_count` value override the HA configuration for number
   // of LXD nodes.
@@ -35,7 +36,7 @@ module "controller" {
   enable_cos     = var.enable_cos
   ssh_public_key = length(var.ssh_key_path) > 0 ? file(var.ssh_key_path) : ""
   image_stream    = var.image_stream
-
+  ubuntu_base     = var.ubuntu_base
 }
 
 module "registry" {
@@ -46,6 +47,7 @@ module "registry" {
   enable_ha      = var.enable_ha
   ssh_public_key = length(var.ssh_key_path) > 0 ? file(var.ssh_key_path) : ""
   image_stream    = var.image_stream
+  ubuntu_base     = var.ubuntu_base
 }
 
 resource "juju_integration" "agent_nats_cmr" {
