@@ -264,7 +264,7 @@ resource "juju_integration" "ams_aar" {
 resource "juju_offer" "ams_offer" {
   model            = juju_model.subcluster.name
   application_name = juju_application.ams.name
-  endpoint         = "rest-api"
+  endpoints         = ["rest-api"]
   name             = "ams${local.offer_suffix}"
 }
 

@@ -194,7 +194,7 @@ resource "juju_integration" "dashboard_ca" {
 resource "juju_offer" "nats_offer" {
   model            = juju_model.controller.name
   application_name = juju_application.nats.name
-  endpoint         = "client"
+  endpoints         = ["client"]
 }
 
 resource "juju_application" "cos_agent" {
