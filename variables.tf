@@ -62,3 +62,8 @@ variable "ssh_key_path" {
   default     = ""
 }
 
+variable "image_stream" {
+  description = "Set the model's image-stream. By default it is set to 'released'."
+  type        = string
+  default     = "released"
+}

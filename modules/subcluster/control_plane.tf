@@ -17,6 +17,7 @@ resource "juju_model" "subcluster" {
   config = {
     logging-config              = "<root>=INFO"
     update-status-hook-interval = "5m"
+    image-stream                = var.image_stream
   }
 }
 

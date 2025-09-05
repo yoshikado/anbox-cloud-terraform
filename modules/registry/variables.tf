@@ -26,3 +26,8 @@ variable "ssh_public_key" {
   default     = ""
 }
 
+variable "image_stream" {
+  description = "Set the model's image-stream. By default it is set to 'released'."
+  type        = string
+  default     = "released"
+}

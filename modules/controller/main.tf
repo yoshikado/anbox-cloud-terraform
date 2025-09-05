@@ -15,6 +15,7 @@ resource "juju_model" "controller" {
   config = {
     logging-config              = "<root>=INFO"
     update-status-hook-interval = "5m"
+    image-stream                = var.image_stream
   }
 }
 
