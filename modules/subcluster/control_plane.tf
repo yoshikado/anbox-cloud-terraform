@@ -131,7 +131,7 @@ resource "juju_integration" "etcd_ca" {
 
   application {
     name     = one(juju_application.etcd_ca[*].name)
-    endpoint = "client"
+    endpoint = "certificates"
   }
 
   application {
