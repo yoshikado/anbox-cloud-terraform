@@ -102,8 +102,8 @@ resource "juju_application" "etcd_ca" {
   constraints = join(" ", var.constraints)
 
   charm {
-    name    = "self-signed-certificates"
-    channel = "1/stable"
+    name    = "easyrsa"
+    channel = "latest/stable"
     base    = local.base
   }
 
@@ -131,7 +131,7 @@ resource "juju_integration" "etcd_ca" {
 
   application {
     name     = one(juju_application.etcd_ca[*].name)
-    endpoint = "certificates"
+    endpoint = "client"
   }
 
   application {
