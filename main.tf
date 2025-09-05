@@ -22,6 +22,7 @@ module "subcluster" {
   ssh_public_key  = length(var.ssh_key_path) > 0 ? file(var.ssh_key_path) : ""
   image_stream    = var.image_stream
   ubuntu_base     = var.ubuntu_base
+  lxd_constraints = var.lxd_constraints
 
   // We let the `lxd_node_count` value override the HA configuration for number
   // of LXD nodes.

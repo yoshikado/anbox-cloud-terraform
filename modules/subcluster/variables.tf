@@ -31,6 +31,12 @@ variable "constraints" {
   default     = []
 }
 
+variable "lxd_constraints" {
+  description = "List of constraints that need to be applied to LXD. Each constraint must be of format `<constraint_name>=<constraint_value>`"
+  type        = list(string)
+  default     = ["arch=amd64", "cpu-cores=8", "mem=16G", "root-disk=50G"]
+}
+
 variable "enable_ha" {
   description = "Number of lxd nodes to deploy per subcluster"
   type        = bool

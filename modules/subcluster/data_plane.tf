@@ -6,7 +6,7 @@ resource "juju_application" "lxd" {
   name = "lxd"
 
   model       = juju_model.subcluster.name
-  constraints = join(" ", concat(var.constraints, ["root-disk=10240M"]))
+  constraints = join(" ", concat(var.lxd_constraints))
 
   charm {
     name    = "ams-lxd"
@@ -18,9 +18,9 @@ resource "juju_application" "lxd" {
   // FIXME: Currently the provider has some issues with reconciling state using
   // the response from the JUJU APIs. This is done just to ignore the changes in
   // string values returned.
-  lifecycle {
-    ignore_changes = [constraints]
-  }
+  #lifecycle {
+  #  ignore_changes = [constraints]
+  #}
 }
 
 resource "juju_application" "ams_node_controller" {
@@ -73,5 +73,5 @@ resource "juju_machine" "lxd_node" {
   count       = var.lxd_nodes
   base        = local.base
   name        = "lxd-${count.index}"
-  constraints = join(" ", var.constraints)
+  constraints = join(" ", var.lxd_constraints)
 }
