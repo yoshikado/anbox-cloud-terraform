@@ -51,6 +51,115 @@ resource "juju_application" "aar" {
   }
 }
 
+resource "juju_application" "cos_agent" {
+  count = var.enable_cos ? 1 : 0
+  name  = "grafana-agent"
+
+  model = juju_model.registry.name
+
+  charm {
+    name = "grafana-agent"
+    base = local.base
+    channel = "1/stable"
+  }
+
+  // FIXME: Currently the provider has some issues with reconciling state using
+  // the response from the JUJU APIs. This is done just to ignore the changes in
+  // string values returned.
+  lifecycle {
+    ignore_changes = [constraints]
+  }
+}
+
+resource "juju_integration" "aar_cos" {
+  count = var.enable_cos ? 1 : 0
+  model = juju_model.registry.name
+
+  application {
+    name     = juju_application.aar.name
+    endpoint = "juju-info"
+  }
+
+  application {
+    name     = one(juju_application.cos_agent[*].name)
+    endpoint = "juju-info"
+  }
+}
+
+resource "juju_application" "logrotated" {
+  count = var.enable_logrotated ? 1 : 0
+  name  = "logrotated"
+
+  model = juju_model.registry.name
+
+  charm {
+    name = "logrotated"
+    base = local.base
+    channel = "latest/stable"
+  }
+
+  config = var.config_logrotated
+
+  // FIXME: Currently the provider has some issues with reconciling state using
+  // the response from the JUJU APIs. This is done just to ignore the changes in
+  // string values returned.
+  lifecycle {
+    ignore_changes = [constraints]
+  }
+}
+
+resource "juju_integration" "aar_logrotated" {
+  count = var.enable_logrotated ? 1 : 0
+  model = juju_model.registry.name
+
+  application {
+    name     = juju_application.aar.name
+    endpoint = "juju-info"
+  }
+
+  application {
+    name     = one(juju_application.logrotated[*].name)
+    endpoint = "juju-info"
+  }
+}
+
+resource "juju_application" "landscape_client" {
+  count = var.enable_landscape_client ? 1 : 0
+  name  = "landscape-client"
+
+  model = juju_model.registry.name
+
+  charm {
+    name = "landscape-client"
+    base = local.base
+    channel = "latest/stable"
+  }
+
+  config = var.config_landscape_client
+
+  // FIXME: Currently the provider has some issues with reconciling state using
+  // the response from the JUJU APIs. This is done just to ignore the changes in
+  // string values returned.
+  lifecycle {
+    ignore_changes = [constraints]
+  }
+}
+
+resource "juju_integration" "aar_landscape_client" {
+  count = var.enable_logrotated ? 1 : 0
+  model = juju_model.registry.name
+
+  application {
+    name     = juju_application.aar.name
+    endpoint = "juju-info"
+  }
+
+  application {
+    name     = one(juju_application.landscape_client[*].name)
+    endpoint = "container"
+  }
+}
+
 resource "juju_offer" "client_offer" {
   model            = juju_model.registry.name
   application_name = juju_application.aar.name

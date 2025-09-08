@@ -207,6 +207,7 @@ resource "juju_application" "cos_agent" {
   charm {
     name = "grafana-agent"
     base = local.base
+    channel = "1/stable"
   }
 
   // FIXME: Currently the provider has some issues with reconciling state using
@@ -232,6 +233,169 @@ resource "juju_integration" "gateway_cos" {
   }
 }
 
+resource "juju_integration" "dashboard_cos" {
+  count = var.enable_cos ? 1 : 0
+  model = juju_model.controller.name
+
+  application {
+    name     = juju_application.dashboard.name
+    endpoint = "juju-info"
+  }
+
+  application {
+    name     = one(juju_application.cos_agent[*].name)
+    endpoint = "juju-info"
+  }
+}
+
+resource "juju_integration" "ca_cos" {
+  count = var.enable_cos ? 1 : 0
+  model = juju_model.controller.name
+
+  application {
+    name     = juju_application.ca.name
+    endpoint = "juju-info"
+  }
+
+  application {
+    name     = one(juju_application.cos_agent[*].name)
+    endpoint = "juju-info"
+  }
+}
+
+resource "juju_application" "logrotated" {
+  count = var.enable_logrotated ? 1 : 0
+  name  = "logrotated"
+
+  model = juju_model.controller.name
+
+  charm {
+    name = "logrotated"
+    base = local.base
+    channel = "latest/stable"
+  }
+
+  config = var.config_logrotated
+
+  // FIXME: Currently the provider has some issues with reconciling state using
+  // the response from the JUJU APIs. This is done just to ignore the changes in
+  // string values returned.
+  lifecycle {
+    ignore_changes = [constraints]
+  }
+}
+
+resource "juju_integration" "gateway_logrotated" {
+  count = var.enable_logrotated ? 1 : 0
+  model = juju_model.controller.name
+
+  application {
+    name     = juju_application.gateway.name
+    endpoint = "juju-info"
+  }
+
+  application {
+    name     = one(juju_application.logrotated[*].name)
+    endpoint = "juju-info"
+  }
+}
+
+resource "juju_integration" "dashboard_logrotated" {
+  count = var.enable_logrotated ? 1 : 0
+  model = juju_model.controller.name
+
+  application {
+    name     = juju_application.dashboard.name
+    endpoint = "juju-info"
+  }
+
+  application {
+    name     = one(juju_application.logrotated[*].name)
+    endpoint = "juju-info"
+  }
+}
+
+resource "juju_integration" "ca_logrotated" {
+  count = var.enable_logrotated ? 1 : 0
+  model = juju_model.controller.name
+
+  application {
+    name     = juju_application.ca.name
+    endpoint = "juju-info"
+  }
+
+  application {
+    name     = one(juju_application.logrotated[*].name)
+    endpoint = "juju-info"
+  }
+}
+
+resource "juju_application" "landscape_client" {
+  count = var.enable_landscape_client ? 1 : 0
+  name  = "landscape-client"
+
+  model = juju_model.controller.name
+
+  charm {
+    name = "landscape-client"
+    base = local.base
+    channel = "latest/stable"
+  }
+
+  config = var.config_landscape_client
+
+  // FIXME: Currently the provider has some issues with reconciling state using
+  // the response from the JUJU APIs. This is done just to ignore the changes in
+  // string values returned.
+  lifecycle {
+    ignore_changes = [constraints]
+  }
+}
+
+resource "juju_integration" "gateway_landscape_client" {
+  count = var.enable_logrotated ? 1 : 0
+  model = juju_model.controller.name
+
+  application {
+    name     = juju_application.gateway.name
+    endpoint = "juju-info"
+  }
+
+  application {
+    name     = one(juju_application.landscape_client[*].name)
+    endpoint = "container"
+  }
+}
+
+resource "juju_integration" "dashboard_landscape_client" {
+  count = var.enable_logrotated ? 1 : 0
+  model = juju_model.controller.name
+
+  application {
+    name     = juju_application.dashboard.name
+    endpoint = "juju-info"
+  }
+
+  application {
+    name     = one(juju_application.landscape_client[*].name)
+    endpoint = "container"
+  }
+}
+
+resource "juju_integration" "ca_landscape_client" {
+  count = var.enable_logrotated ? 1 : 0
+  model = juju_model.controller.name
+
+  application {
+    name     = juju_application.ca.name
+    endpoint = "juju-info"
+  }
+
+  application {
+    name     = one(juju_application.landscape_client[*].name)
+    endpoint = "container"
+  }
+}
 
 resource "juju_machine" "controller_node" {
   model       = juju_model.controller.name

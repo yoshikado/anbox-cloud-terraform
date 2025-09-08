@@ -10,19 +10,23 @@ locals {
 }
 
 module "subcluster" {
-  for_each        = local.subcluster_config_map
-  source          = "./modules/subcluster"
-  model_suffix    = each.key
-  channel         = var.anbox_channel
-  external_etcd   = true
-  constraints     = var.constraints
-  enable_ha       = var.enable_ha
-  registry_config = each.value.registry_config
-  enable_cos      = var.enable_cos
-  ssh_public_key  = length(var.ssh_key_path) > 0 ? file(var.ssh_key_path) : ""
-  image_stream    = var.image_stream
-  ubuntu_base     = var.ubuntu_base
-  lxd_constraints = var.lxd_constraints
+  for_each                = local.subcluster_config_map
+  source                  = "./modules/subcluster"
+  model_suffix            = each.key
+  channel                 = var.anbox_channel
+  external_etcd           = true
+  constraints             = var.constraints
+  enable_ha               = var.enable_ha
+  enable_cos              = var.enable_cos
+  enable_logrotated       = var.enable_logrotated
+  enable_landscape_client = var.enable_landscape_client
+  registry_config         = each.value.registry_config
+  config_logrotated       = var.config_logrotated
+  config_landscape_client = var.config_landscape_client
+  ssh_public_key          = length(var.ssh_key_path) > 0 ? file(var.ssh_key_path) : ""
+  image_stream            = var.image_stream
+  ubuntu_base             = var.ubuntu_base
+  lxd_constraints         = var.lxd_constraints
 
   // We let the `lxd_node_count` value override the HA configuration for number
   // of LXD nodes.
@@ -30,25 +34,34 @@ module "subcluster" {
 }
 
 module "controller" {
-  source         = "./modules/controller"
-  channel        = var.anbox_channel
-  constraints    = var.constraints
-  enable_ha      = var.enable_ha
-  enable_cos     = var.enable_cos
-  ssh_public_key = length(var.ssh_key_path) > 0 ? file(var.ssh_key_path) : ""
-  image_stream    = var.image_stream
-  ubuntu_base     = var.ubuntu_base
+  source                  = "./modules/controller"
+  channel                 = var.anbox_channel
+  constraints             = var.constraints
+  enable_ha               = var.enable_ha
+  enable_cos              = var.enable_cos
+  enable_logrotated       = var.enable_logrotated
+  enable_landscape_client = var.enable_landscape_client
+  config_logrotated       = var.config_logrotated
+  config_landscape_client = var.config_landscape_client
+  ssh_public_key          = length(var.ssh_key_path) > 0 ? file(var.ssh_key_path) : ""
+  image_stream            = var.image_stream
+  ubuntu_base             = var.ubuntu_base
 }
 
 module "registry" {
-  count          = var.deploy_registry ? 1 : 0
-  source         = "./modules/registry"
-  channel        = var.anbox_channel
-  constraints    = var.constraints
-  enable_ha      = var.enable_ha
-  ssh_public_key = length(var.ssh_key_path) > 0 ? file(var.ssh_key_path) : ""
-  image_stream    = var.image_stream
-  ubuntu_base     = var.ubuntu_base
+  count                   = var.deploy_registry ? 1 : 0
+  source                  = "./modules/registry"
+  channel                 = var.anbox_channel
+  constraints             = var.constraints
+  enable_ha               = var.enable_ha
+  enable_cos              = var.enable_cos
+  enable_logrotated       = var.enable_logrotated
+  enable_landscape_client = var.enable_landscape_client
+  config_logrotated       = var.config_logrotated
+  config_landscape_client = var.config_landscape_client
+  ssh_public_key          = length(var.ssh_key_path) > 0 ? file(var.ssh_key_path) : ""
+  image_stream            = var.image_stream
+  ubuntu_base             = var.ubuntu_base
 }
 
 resource "juju_integration" "agent_nats_cmr" {

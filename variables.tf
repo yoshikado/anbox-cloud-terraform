@@ -50,6 +50,37 @@ variable "enable_ha" {
   default     = false
 }
 
+variable "enable_logrotated" {
+  description = "Enable relation with logrotated charm for anbox cloud"
+  type        = bool
+  default     = true
+}
+
+variable "config_logrotated" {
+  description = "Configurations for logrotated"
+  type        = map(string)
+  
+  default = {
+    "logrotate-retention" = "60"
+  }
+}
+
+variable "enable_landscape_client" {
+  description = "Enable relation with landscape-client charm for anbox cloud"
+  type        = bool
+  default     = true
+}
+
+variable "config_landscape_client" {
+  description = "Configurations for landscape-client"
+  type        = map(string)
+  
+  default = {
+    "account-name" = "standalone"
+    "disable-unattended-upgrades" = "true"
+  }
+}
+
 variable "deploy_registry" {
   description = "Deploy the Anbox Application Registry"
   type        = bool
@@ -72,6 +103,16 @@ variable "ubuntu_base" {
   description = "Set the default ubuntu base. Default is set to 24.04"
   type        = string
   default     = "ubuntu@24.04"
+}
+
+variable "model_config_anbox_controller" {
+  description = "Model configs for anbox-controller"
+  type        = map(string)
+  
+  default = {
+    logging-config              = "<root>=INFO"
+    update-status-hook-interval = "5m"
+  }
 }
 
 variable "lxd_constraints" {

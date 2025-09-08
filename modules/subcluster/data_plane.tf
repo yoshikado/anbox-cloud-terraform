@@ -40,6 +40,51 @@ resource "juju_application" "ams_node_controller" {
   }
 }
 
+resource "juju_integration" "lxd_cos" {
+  count = var.enable_cos ? 1 : 0
+  model = juju_model.subcluster.name
+
+  application {
+    name     = juju_application.lxd.name
+    endpoint = "juju-info"
+  }
+
+  application {
+    name     = one(juju_application.cos_agent[*].name)
+    endpoint = "juju-info"
+  }
+}
+
+resource "juju_integration" "lxd_logrotated" {
+  count = var.enable_logrotated ? 1 : 0
+  model = juju_model.subcluster.name
+
+  application {
+    name     = juju_application.lxd.name
+    endpoint = "juju-info"
+  }
+
+  application {
+    name     = one(juju_application.logrotated[*].name)
+    endpoint = "juju-info"
+  }
+}
+
+resource "juju_integration" "lxd_landscape_client" {
+  count = var.enable_logrotated ? 1 : 0
+  model = juju_model.subcluster.name
+
+  application {
+    name     = juju_application.lxd.name
+    endpoint = "juju-info"
+  }
+
+  application {
+    name     = one(juju_application.landscape_client[*].name)
+    endpoint = "container"
+  }
+}
+
 resource "juju_integration" "ip_table_rules" {
   model = juju_model.subcluster.name
 
